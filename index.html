@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="animalShelter">
+  <head>
+    <meta charset="UTF-8">
+    <title>Animal Shelter</title>
+    <script src="lib/angular.js"></script>
+    <script src="app.js"></script>
+    <script src="controllers/ShelterPetsController.js"></script>
+    <script src="controllers/AdoptionsController.js"></script>
+    <script src="services/PetsFactory.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <div ng-controller="ShelterPetsCtrl">
+        <div class="row" ng-show="pets.length">
+          <div class="col-md-12">
+            <h4>Search for a Pet! =)</h4>
+            <form class="form-inline" role="form">
+              <div class="form-group">
+                <input ng-model="query" type="text" class="form-control" placeholder="Search">
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <h2 ng-show="pets.length && filtered.length">These pets need homes!</h2>
+            <h2 ng-show="pets.length && !filtered.length">There are no pets of that description or name here right now.</h2>
+            <ul>
+              <li ng-repeat="item in filtered = (pets | filter:query)">
+                <div class="well">
+                <h5> {{item.name}} </h5>
+                <p>Description: {{item.description}} </p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class = 'col-md-4'>
+            <h2>Abandon Your Pet =(</h2>
+            <form ng-submit="PetsFactory.abandonPet()" class="form-inline" role="form">
+              <div class="form-group">
+                <input type="text" ng-model="PetsFactory.petName" class="form-control" id="pet-name" placeholder="Enter Name">
+                <input type="text" ng-model="PetsFactory.petDescription" class="form-control" id="pet-description" placeholder="Enter Description">
+              </div>
+                <button type="submit" class="btn btn-danger">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
