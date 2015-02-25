@@ -1,5 +1,42 @@
+body {
+  background-color: #026682;
+}
+
 ul {
   list-style: none;
+}
+
+h2 {
+  color: #56C2E1;
+  margin-left: 50px;
+  font-size: 45px;
+}
+
+h4 {
+  color: #56C2E1;
+}
+
+.jumbotron {
+  margin-bottom: 0px;
+}
+
+#navigation {
+  margin-top: 0px;
+  border-radius: 0px;
+}
+
+#pet-search {
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 5px;
+
+}
+
+#abandon-form {
+  max-width: 600px;
+  background-color: rgba(44, 182, 221, 0.3);
+  padding: 10px;
+  margin-left: 300px;
 }
 
 #pet-type {
@@ -8,7 +45,13 @@ ul {
 
 #pet-description {
   max-width: 450px;
+  margin-top: 5px;
 }
 
 #abandonbtn {
+  margin-top: 5px;
+}
+
+.well {
+  border: 2px solid black;
 }

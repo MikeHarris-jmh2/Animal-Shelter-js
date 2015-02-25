@@ -8,14 +8,27 @@
     <script src="controllers/ShelterPetsController.js"></script>
     <script src="controllers/AdoptionsController.js"></script>
     <script src="services/PetsFactory.js"></script>
-    <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
+    <div class="jumbotron">
+      <h1>Animal Shelter</h1>
+    </div>
+
+    <nav class="navbar navbar-default" id="navigation">
+      <ul class="nav navbar-nav">
+        <li ng-click="active='search'" ng-class="{ active: active ==='search' } "><a href="#">Search for a Pet<span class="sr-only">(current)</span></a></li>
+        <li ng-click="active='see'" ng-class="{ active: active ==='see' }"><a href="#">See Adopted Pets</a></li>
+        <li ng-click="active='abandon'" ng-class="{ active: active ==='abandon' }"><a href="#">Abandon Your Pet</a></li>
+      </ul>
+    </nav>
+
     <div class="container">
       <div ng-controller="ShelterPetsCtrl">
           <div class="row" ng-show="pets.length">
-            <div class="col-md-12">
+            <div class="col-md-12" id="pet-search" ng-hide="active !== 'search'">
               <h4>Search for a Pet! =)</h4>
               <form class="form-inline" role="form">
                 <div class="form-group">
@@ -23,15 +36,15 @@
                 </div>
               </form>
             </div>
-            
-            <div class="col-md-12">
-              <h2 ng-show="pets.length && filtered.length">These pets need homes!</h2>
+
+            <div class="col-md-12" ng-hide="active === 'see' || active === 'abandon'">
+              <h2 ng-show="pets.length && filtered.length">These pets need homes!  <i class="fa fa-home"></i></h2>
               <h2 ng-show="pets.length && !filtered.length">There are no pets of that description or name here right now.</h2>
               <ul>
-                <li ng-repeat="item in filtered = (pets | filter:query)">
+                <li ng-repeat="item in filtered = (pets | filter:query | filter:{adopted: false})">
                   <div class="well">
-        <!-- <div ng-controller="AdoptionsCtrl"> -->
-                    <h3> {{item.name}} </h3> <a ng-click="addAdoptedPet(item)">Adopt!</a>
+        <div ng-controller="AdoptionsCtrl">
+                    <h3> {{item.name}} </h3> <a ng-click="addAdoptedPet(item)">Adopt! <i class="fa fa-heart"></i></a>
                     <h4> {{item.species}} </h4>
                     <p>Breed or Type: {{item.type}}
                       <p>Description: {{item.description}} </p>
@@ -42,12 +55,12 @@
         </div>
 
         <div class="row">
-          <div class = 'col-md-12'>
+          <div class = 'col-md-12' id="abandon-form" ng-hide="active !== 'abandon'">
             <h2>Abandon Your Pet =(</h2>
-              <form ng-submit="PetsFactory.abandonPet()" class="form-inline" role="form">
+              <form ng-submit="PetsFactory.abandonConfirm()" class="form-inline" role="form">
                 <input type="text" ng-model="PetsFactory.petName" class="form-control" id="pet-name" placeholder="Enter Pet's Name" required>
                 <select ng-model="PetsFactory.petSpecies" class="form-control" id="pet-species" ng-selected="Dog" required>
-                  <option value="Dog" >Dog</option>
+                  <option value="Dog &#xe003;">Dog &#xe003;</option>
                   <option value="Cat">Cat</option>
                   <option value="Bird">Bird</option>
                   <option value="Reptile">Reptile</option>
@@ -56,12 +69,21 @@
                 </select>
                 <input type="text" ng-model="PetsFactory.petType" class="form-control" id="pet-type" placeholder="What breed or type is the pet?" required>
           </div>
-          <div class="col-md-12">
+          <div class="col-md-12" id="abandon-form" ng-hide="active !== 'abandon'">
             <textarea ng-model="PetsFactory.petDescription" class="form-control" id="pet-description" placeholder="Enter a description of the pet." required></textarea>
-            <button type="submit" class="btn btn-danger" id="abandonbtn">Submit</button>
+            <button type="submit" class="btn btn-danger" id="abandonbtn"><i class="fa fa-meh-o"></i> Abandon</button>
               </form>
           </div>
-        <h2 ng-show="adoptedPets.length">These pets have happy homes!</h2>
+          <div class="col-md-12" ng-hide="active !== 'see'">
+            <h2 ng-show="adoptedPets.length">These pets have happy homes!</h2>
+            <ul>
+              <li ng-repeat="item in adoptedPets = (pets | filter:{adopted: true})">
+                <h3> {{item.name}} </h3>
+                <h4> {{item.species}} </h4>
+              </li>
+            </ul>
+          </div>
+        </div>
         </div>
       </div>
     </div>
